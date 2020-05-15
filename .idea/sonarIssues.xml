@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="issues">
+    <option name="index">
+      <map>
+        <entry key="/Dummy.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart-Stencil/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmartHomeKitSdk/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmartHomeKitSdk/configlib/src/main/java/com/tuya/sdk/config/presenter/TuyaActivator.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmartHomeKitSdk/configlib/src/main/java/com/tuya/sdk/config/presenter/TuyaHardwareConfigManager.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmartHomeKitSdk/configlib/src/main/java/com/tuya/sdk/config/presenter/TuyaSubDevActivatorImpl.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_api/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_api/src/main/java/com/tuya/smart/deviceconfig/api/TuyaDeviceActivatorImpl.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_api/src/main/java/com/tuya/smart/deviceconfig/api/TuyaDeviceActivatorManager.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_ble/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_ble/src/main/java/com/tuya/smart/config/ble/model/BLEConfigScanner.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_ble/src/main/java/com/tuya/smart/config/ble/utils/ByteUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_ble/src/main/java/com/tuya/smart/config/ble/utils/TuyaBeaconParser.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_ble/src/main/res/layout/bleconfig_recycle_item_ble_scan.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_ble_api/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_mesh/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_mesh/src/main/java/com/tuya/smart/config/mesh/util/BlueMeshSearchUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_mesh/src/main/java/com/tuya/smart/config/mesh/util/StringUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/config_mesh_api/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/java/com/tuya/smart/deviceconfig/auto/presenter/FreeScanBindSuccessPresenter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/java/com/tuya/smart/deviceconfig/base/activity/WorkWifiChooseActivity.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/java/com/tuya/smart/deviceconfig/base/fragment/BaseWorkWifiChooseFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/java/com/tuya/smart/deviceconfig/base/model/CommonModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/java/com/tuya/smart/deviceconfig/base/model/WorkWifiChooseModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/java/com/tuya/smart/deviceconfig/base/presenter/BindDeviceSuccessPresenter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/java/com/tuya/smart/deviceconfig/base/presenter/ResetDevicePresenter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/java/com/tuya/smart/deviceconfig/base/view/WifiChooseAndInputPasswordView.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/java/com/tuya/smart/deviceconfig/search/fragment/SearchDeviceSupportFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/java/com/tuya/smart/deviceconfig/searchv2/SearchConfigModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/java/com/tuya/smart/deviceconfig/searchv2/presenter/DeviceOperatePresenter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/java/com/tuya/smart/deviceconfig/viewutil/StepGroup.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/res/layout/activity_config_all_dms.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/res/layout/activity_config_failure.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/res/layout/activity_discover_device.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/res/layout/config_activity_add_child_dev.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/res/layout/config_activity_device_config_help.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/res/layout/config_activity_other_model.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/res/layout/config_activity_sub_device_config_search.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/res/values/boolean.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyaconfig/src/main/res/values/color.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../TuyaSmart_Config/tuyascan/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/proguard-rules.pro">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/tuya/smart/config/bizbundle/MainActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/tuya/smart/config/bizbundle/TuyaSmartApp.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/values-zh/strings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/values/styles.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/gradle.properties">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/local.properties">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../SDK_Doc/AndroidDoc/device_active_doc/en/README.md">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../SDK_Doc/AndroidDoc/device_active_doc/zh-hans/README.md">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="/fragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

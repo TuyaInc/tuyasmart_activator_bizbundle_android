@@ -1,0 +1,1176 @@
+# This is a configuration file for ProGuard.
+# http://proguard.sourceforge.net/index.html#manual/usage.html
+#
+# Starting with version 2.2 of the Android plugin for Gradle, this file is distributed together with
+# the plugin and unpacked at build-time. The files in $ANDROID_HOME are no longer maintained and
+# will be ignored by new version of the Android plugin for Gradle.
+
+# Optimization is turned off by default. Dex does not like code run
+# through the ProGuard optimize steps (and performs some
+# of these optimizations on its own).
+# Note that if you want to enable optimization, you cannot just
+# include optimization flags in your own project configuration file;
+# instead you will need to point to the
+# "proguard-android-optimize.txt" file instead of this one from your
+# project.properties file.
+-dontoptimize
+
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
+
+# Preserve some attributes that may be required for reflection.
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
+
+-keep public class com.google.vending.licensing.ILicensingService
+-keep public class com.android.vending.licensing.ILicensingService
+-keep public class com.google.android.vending.licensing.ILicensingService
+-dontnote com.android.vending.licensing.ILicensingService
+-dontnote com.google.vending.licensing.ILicensingService
+-dontnote com.google.android.vending.licensing.ILicensingService
+
+# For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+# Keep setters in Views so that animations can still work.
+-keepclassmembers public class * extends android.view.View {
+    void set*(***);
+    *** get*();
+}
+
+# We want to keep methods in Activity that could be used in the XML attribute onClick.
+-keepclassmembers class * extends android.app.Activity {
+    public void *(android.view.View);
+}
+
+# For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}
+
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+# Preserve annotated Javascript interface methods.
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+# The support libraries contains references to newer platform versions.
+# Don't warn about those in case this app is linking against an older
+# platform version. We know about them, and they are safe.
+-dontnote android.support.**
+-dontnote androidx.**
+-dontwarn android.support.**
+-dontwarn androidx.**
+
+# This class is deprecated, but remains for backward compatibility.
+-dontwarn android.util.FloatMath
+
+# Understand the @Keep support annotation.
+-keep class android.support.annotation.Keep
+-keep class androidx.annotation.Keep
+
+-keep @android.support.annotation.Keep class * {*;}
+-keep @androidx.annotation.Keep class * {*;}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <init>(...);
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <init>(...);
+}
+
+# These classes are duplicated between android.jar and org.apache.http.legacy.jar.
+-dontnote org.apache.http.**
+-dontnote android.net.http.**
+
+# These classes are duplicated between android.jar and core-lambda-stubs.jar.
+-dontnote java.lang.invoke.**
+
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
+
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+
+# -----------------------------------基本指令区------------------------------------------
+
+# 混淆时不会产生形形色色的类名(混淆时不使用大小写混合类名)
+-dontusemixedcaseclassnames
+-keepattributes Exceptions,InnerClasses,Deprecated,LocalVariable*Table,Synthetic,EnclosingMethod
+# 当有优化和使用-repackageclasses时才适用。
+-repackageclasses ''
+# 优化时允许访问并修改有修饰符的类和类的成员，这可以提高优化步骤的结果。
+# 比如，当内联一个公共的getter方法时，这也可能需要外地公共访问。
+# 虽然java二进制规范不需要这个，要不然有的虚拟机处理这些代码会有问题。当有优化和使用-repackageclasses时才适用。
+# 指示语：不能用这个指令处理库中的代码，因为有的类和类成员没有设计成public ,而在api中可能变成public
+-allowaccessmodification
+-printconfiguration proguard_test.txt
+# 指定代码的压缩级别 0 - 7(指定代码进行迭代优化的次数，在Android里面默认是5，这条指令也只有在可以优化时起作用。)
+-optimizationpasses 5
+# 不进行优化，建议使用此选项，
+-dontoptimize
+# 混淆时记录日志(打印混淆的详细信息)
+# 这句话能够使我们的项目混淆后产生映射文件
+# 包含有类名->混淆后类名的映射关系
+-verbose
+# 指定不去忽略非公共的库类(不跳过library中的非public的类)
+-dontskipnonpubliclibraryclasses
+# 指定不去忽略包可见的库类的成员
+-dontskipnonpubliclibraryclassmembers
+# 不做预校验，preverify是proguard的四个步骤之一，Android不需要preverify，去掉这一步能够加快混淆速度。
+-dontpreverify
+# 指定混淆是采用的算法，后面的参数是一个过滤器
+# 这个过滤器是谷歌推荐的算法，一般不做更改
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+# 保护代码中的Annotation不被混淆
+-keepattributes *Annotation*
+# 避免混淆泛型, 这在JSON实体映射时非常重要
+-keepattributes Signature
+# 抛出异常时保留代码行号
+-keepattributes SourceFile,LineNumberTable
+
+# -----------------------------------默认保留区------------------------------------------
+
+# 不混淆声明的这两个类，这两个类我们基本也用不上，是接入Google原生的一些服务时使用的。
+-keep public class com.google.vending.licensing.ILicensingService
+-keep public class com.android.vending.licensing.ILicensingService
+
+# 不混淆任何包含native方法的类的类名以及native方法名，但当成员没有被引用时会被移除
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+# Keep native methods
+-keepclassmembers class * {
+    native <methods>;
+}
+
+# 不混淆任何一个View中的setXxx()和getXxx()方法，因为属性动画需要有相应的setter和getter的方法实现，混淆了就无法工作了。
+-keepclassmembers public class * extends android.view.View {
+   void set*(***);
+   *** get*();
+}
+
+# 不混淆Activity中参数是View的方法，因为有这样一种用法，在XML中配置android:onClick=”buttonClick”属性，当用户点击该按钮时就会调用Activity中的buttonClick(View view)方法，如果这个方法被混淆的话就找不到了。
+-keepclassmembers class * extends android.app.Activity {
+   public void *(android.view.View);
+}
+
+# 不混淆枚举中的values()和valueOf()方法
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keepclassmembers class * extends java.lang.Enum {
+        public static **[] values();
+        public static ** valueOf(java.lang.String);
+        **[] $VALUES;
+}
+
+# 不混淆R文件中的所有静态字段，我们都知道R文件是通过字段来记录每个资源的id的，字段名要是被混淆了，id也就找不着了。
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+# 保持 Parcelable 不被混淆
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+# 不混淆Parcelable实现类中的CREATOR字段，毫无疑问，CREATOR字段是绝对不能改变的，包括大小写都不能变，不然整个Parcelable工作机制都会失败。
+-keepclassmembers class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator CREATOR;
+}
+
+#java
+-keep class java.awt.**{*;}
+-dontwarn java.awt.**
+-dontwarn junit.**
+-dontwarn javax.microedition.khronos.opengles.GL10.**
+-keep interface *
+-keep class javax.jmdns.**{*;}
+
+-dontwarn javax.annotation.**
+
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+-keepclasseswithmembernames class * {
+	public <init>(android.content.Context, android.util.AttributeSet);
+}
+-keepclasseswithmembernames class * {
+	public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+-keepclassmembers class * {
+   public <init>(org.json.JSONObject);
+}
+-keep class org.json.**{*;}
+
+-keep,allowobfuscation @interface android.support.annotation.Keep
+-keep @android.support.annotation.Keep class *
+-keepclassmembers class * {
+    @android.support.annotation.Keep *;
+}
+#EventBus
+-keepclassmembers class ** {
+    public void onEvent*(**);
+}
+
+#fastJson
+-keep class com.alibaba.fastjson.**{*;}
+-dontwarn com.alibaba.fastjson.**
+
+#mqtt
+-keep class com.tuya.smart.mqttclient.mqttv3.** { *; }
+-dontwarn com.tuya.smart.mqttclient.mqttv3.**
+
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.** { *; }
+-dontwarn com.squareup.okhttp.**
+
+-keep class okio.** { *; }
+-dontwarn okio.**
+
+#OkHttp3
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
+
+-keep class com.tuya.**{*;}
+-dontwarn com.tuya.**
+
+-dontwarn com.facebook.soloader.**
+-dontwarn android.net.http.HttpResponseCache
+
+#mqtt
+-keep class org.eclipse.paho.client.mqttv3.** { *; }
+-dontwarn org.eclipse.paho.client.mqttv3.**
+
+-dontwarn javax.annotation.**
+
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.** { *; }
+-keep class okio.** { *; }
+-dontwarn com.squareup.okhttp.**
+
+#rx
+-dontwarn rx.**
+-keep class rx.** {*;}
+-keep class io.reactivex.**{*;}
+-dontwarn io.reactivex.**
+-keep class rx.**{ *; }
+-keep class rx.android.**{*;}
+
+#fresco
+-keep class com.facebook.drawee.backends.pipeline.Fresco
+
+#tuya
+-keep class com.tuya.**{*;}
+-dontwarn com.tuya.**
+
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:32
+-keep class android.support.v4.app.CoreComponentFactory { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:74
+-keep class com.tuya.sdk.blelib.BluetoothService { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:58
+-keep class com.tuya.smart.android.hardware.service.DevTransferService { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:62
+-keep class com.tuya.smart.android.hardware.service.GwBroadcastMonitorService { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:49
+-keep class com.tuya.smart.config.bizbundle.MainActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:32
+-keep class com.tuya.smart.config.bizbundle.TuyaSmartApp { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:109
+-keep class com.tuya.smart.config.ble.activity.BLEDeviceScanActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:112
+-keep class com.tuya.smart.config.ble.activity.BleConfigProgressActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:118
+-keep class com.tuya.smart.config.ble.activity.BleConfigSuccessActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:115
+-keep class com.tuya.smart.config.ble.activity.FreeBleWifiDevConfigActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:121
+-keep class com.tuya.smart.config.ble.activity.WifiDevConfigActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:92
+-keep class com.tuya.smart.config.mesh.activity.AddMeshDeviceActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:102
+-keep class com.tuya.smart.config.mesh.activity.AddMeshDialogActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:105
+-keep class com.tuya.smart.config.mesh.activity.AddMeshGwDialogActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:97
+-keep class com.tuya.smart.config.mesh.activity.AddSigMeshDeviceActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:263
+-keep class com.tuya.smart.demo_login.base.activity.SplashActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:281
+-keep class com.tuya.smart.demo_login.login.activity.AccountConfirmActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:278
+-keep class com.tuya.smart.demo_login.login.activity.AccountInputActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:284
+-keep class com.tuya.smart.demo_login.login.activity.CountryListActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:272
+-keep class com.tuya.smart.demo_login.login.activity.LoginActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:275
+-keep class com.tuya.smart.demo_login.login.activity.LoginWithPhoneActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:192
+-keep class com.tuya.smart.deviceconfig.auto.activity.FreeScanConfigCompleteActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:196
+-keep class com.tuya.smart.deviceconfig.auto.activity.FreeScanDeviceBindActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:212
+-keep class com.tuya.smart.deviceconfig.auto.activity.ScanConfigFindDeviceActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:205
+-keep class com.tuya.smart.deviceconfig.auto.activity.ScanConfigSubChooseGatewayActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:200
+-keep class com.tuya.smart.deviceconfig.base.activity.ConfigAllDMSActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:126
+-keep class com.tuya.smart.deviceconfig.base.activity.ConfigBaseActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:238
+-keep class com.tuya.smart.deviceconfig.base.activity.ConfigPlayVideoActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:233
+-keep class com.tuya.smart.deviceconfig.base.activity.DeviceConfigAndResultActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:181
+-keep class com.tuya.smart.deviceconfig.base.activity.DeviceGatewayChooseActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:229
+-keep class com.tuya.smart.deviceconfig.base.activity.DeviceResetActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:225
+-keep class com.tuya.smart.deviceconfig.base.activity.WifiChooseActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:226
+-keep class com.tuya.smart.deviceconfig.base.activity.WifiHotspotTipActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:220
+-keep class com.tuya.smart.deviceconfig.base.activity.WorkWifiChooseActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:242
+-keep class com.tuya.smart.deviceconfig.bluetooth.activity.BleWifiOrAPConfigFailureActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:159
+-keep class com.tuya.smart.deviceconfig.camera.activity.CameraConfigHelpActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:153
+-keep class com.tuya.smart.deviceconfig.camera.activity.DeviceCameraConfigActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:137
+-keep class com.tuya.smart.deviceconfig.discover.activity.DeviceBaseBindSuccessActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:130
+-keep class com.tuya.smart.deviceconfig.discover.activity.DiscoverBleDeviceBindActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:133
+-keep class com.tuya.smart.deviceconfig.discover.activity.DiscoverBleDeviceListActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:134
+-keep class com.tuya.smart.deviceconfig.discover.activity.DiscoverBleScanDeviceActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:246
+-keep class com.tuya.smart.deviceconfig.discover.activity.DiscoverDeviceActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:127
+-keep class com.tuya.smart.deviceconfig.guide.ui.DeviceConfigGuideActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:188
+-keep class com.tuya.smart.deviceconfig.qr.activity.DeviceQRCodeConfigActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:216
+-keep class com.tuya.smart.deviceconfig.result.activity.ConfigFailureActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:247
+-keep class com.tuya.smart.deviceconfig.searchv2.blewifi.SearchBleWifiConfigActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:147
+-keep class com.tuya.smart.deviceconfig.sub.help.SubDeviceConfigHelpListActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:140
+-keep class com.tuya.smart.deviceconfig.sub.search.SubDeviceConfigSearchActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:165
+-keep class com.tuya.smart.deviceconfig.tmobile.activity.DeviceMobileScanConfigActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:169
+-keep class com.tuya.smart.deviceconfig.wired.activity.AddGWSubDevActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:177
+-keep class com.tuya.smart.deviceconfig.wired.activity.GatewayListActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:173
+-keep class com.tuya.smart.deviceconfig.wired.activity.ScanGatewayActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:82
+-keep class com.tuya.smart.jsbridge.base.webview.WebViewActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:76
+-keep class com.tuya.smart.jsbridge.utils.provider.ImagePickerContentProvider { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:57
+-keep class com.tuya.smart.mqtt.MqttService { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:88
+-keep class com.tuya.smart.multimedia.qrcode.android.PreferencesActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:251
+-keep class com.tuya.smart.scan.activity.ScanActivity { <init>(); }
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/build/intermediates/merged_manifests/release/AndroidManifest.xml:257
+-keep class com.tuya.smart.scan.activity.ScanForCameraPermissionActivity { <init>(); }
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/qrcode_config_fragment_progress.xml:17
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/dd65d8f7d67892bdd712a065959d9a2e/tuyasmart-demo-login-3.17.6r141/res/layout/list_item_url.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_item_wifi_hotspot_choose.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_item_wifi_choose.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_fragment_ap.xml:23
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_change_config_way_item_popup_window.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_activity_wifi_hotspot_tip.xml:1
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_activity_wifi_choose.xml:22
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_video_play_view.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_search.xml:1
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_reset_device_step.xml:14
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_reset_device_full_page.xml:28
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_progress.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_config_all_left.xml:39
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_bluetooth_failure_with_other.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_bluetooth_failure_with_not_found_router.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_choosewifi_inputpassword.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_play_video.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/activity_device_config_guide_second.xml:2
+-keep class android.support.constraint.ConstraintLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_search_toolbar_top_view.xml:2
+-keep class android.support.design.widget.AppBarLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_alert_dialog_material.xml:41
+-keep class android.support.v4.widget.NestedScrollView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_select_dialog_material.xml:23
+-keep class android.support.v7.app.AlertController$RecycleListView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_action_menu_item_layout.xml:17
+-keep class android.support.v7.view.menu.ActionMenuItemView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_expanded_menu_layout.xml:17
+-keep class android.support.v7.view.menu.ExpandedMenuView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_popup_menu_item_layout.xml:17
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_list_menu_item_layout.xml:17
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_cascading_menu_item_layout.xml:20
+-keep class android.support.v7.view.menu.ListMenuItemView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_screen_toolbar.xml:27
+-keep class android.support.v7.widget.ActionBarContainer { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_screen_toolbar.xml:43
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_action_mode_bar.xml:19
+-keep class android.support.v7.widget.ActionBarContextView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_screen_toolbar.xml:17
+-keep class android.support.v7.widget.ActionBarOverlayLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_action_menu_layout.xml:17
+-keep class android.support.v7.widget.ActionMenuView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_activity_chooser_view.xml:19
+-keep class android.support.v7.widget.ActivityChooserView$InnerLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_alert_dialog_material.xml:18
+-keep class android.support.v7.widget.AlertDialogLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_alert_dialog_button_bar_material.xml:26
+-keep class android.support.v7.widget.ButtonBarLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/scan_config_find_device_adapter_layout.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/qrcode_config_fragment_progress.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/fragment_qrcode_tip_layout.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_fragment_ap.xml:15
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_search_scan_timeout_layout.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_prepare_confirm_layout.xml:3
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_wifi_choose.xml:1
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_scan_config_wifi_choose.xml:1
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_reset_device_step.xml:3
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_reset_device_full_page.xml:3
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_qrcode_camera_layout.xml:1
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_free_scan_device_bind.xml:3
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_discover_ble_scan_device.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_device_config_guide.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_bind_device_success.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_bind_device.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_ap_wifi_tip.xml:1
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_zigbee_gateway_list.xml:19
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_scan_zigbee_gateway.xml:19
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_qrconnect_help.xml:1
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_progress_and_result.xml:21
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_discover_list.xml:29
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_device_gateway_choose.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/7c601bbaa779ebf29f3d41b284e7ef8f/tuya-config-mesh-1.0.0-SNAPSHOT/res/layout/bluemesh_fragment_sub_device_add.xml:7
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/7c601bbaa779ebf29f3d41b284e7ef8f/tuya-config-mesh-1.0.0-SNAPSHOT/res/layout/bluemesh_activity_add_mesh_device.xml:14
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/26e61e3d3da18a209aca35aae6f8fecd/tuya-config-ble-1.0.0-SNAPSHOT/res/layout/bleconfig_activity_bledevice_scan.xml:40
+-keep class android.support.v7.widget.CardView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_screen_content_include.xml:19
+-keep class android.support.v7.widget.ContentFrameLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_alert_dialog_title_material.xml:45
+-keep class android.support.v7.widget.DialogTitle { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_screen_simple_overlay_action_mode.xml:23
+-keep class android.support.v7.widget.FitWindowsFrameLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_screen_simple.xml:17
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_dialog_title_material.xml:22
+-keep class android.support.v7.widget.FitWindowsLinearLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_layout_family_dialog_content_list_item.xml:2
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uipsecs_layout_family_dialog_content_rv_center.xml:10
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uipsecs_layout_family_dialog_content_rv.xml:10
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uipsecs_layout_family_dialog_content_list.xml:7
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/70e686a186dea261e793c19bea0a75aa/tuyasmart-uiadapter-3.13.3r129-rc.4/res/layout/layout_family_home_dev_list.xml:3
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_device_success_layout.xml:25
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_change_config_way_popup_window.xml:9
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_activity_wifi_hotspot_tip.xml:96
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_activity_wifi_choose.xml:78
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_config_all_left.xml:17
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_bind_device_success.xml:31
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_ap_wifi_tip.xml:84
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_dialog_feedback.xml:32
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_zigbee_gateway_list.xml:49
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_other_model.xml:22
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_discover_list.xml:56
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_device_gateway_choose.xml:26
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_device_config_help.xml:11
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_add_child_dev.xml:12
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/7c601bbaa779ebf29f3d41b284e7ef8f/tuya-config-mesh-1.0.0-SNAPSHOT/res/layout/bluemesh_fragment_sub_device_add.xml:60
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/26e61e3d3da18a209aca35aae6f8fecd/tuya-config-ble-1.0.0-SNAPSHOT/res/layout/bleconfig_activity_bledevice_scan.xml:134
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/activity_scan_config_find_device.xml:11
+-keep class android.support.v7.widget.RecyclerView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_search_view.xml:75
+-keep class android.support.v7.widget.SearchView$SearchAutoComplete { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout-v26/abc_screen_toolbar.xml:37
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_toolbar_top_view.xml:11
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_search_toolbar_top_view.xml:9
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/dd65d8f7d67892bdd712a065959d9a2e/tuyasmart-demo-login-3.17.6r141/res/layout/ty_toolbar_top_view.xml:8
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/7cfb415ff24a7eb242c19a66d4d47069/tuyasmart-webcontainer-3.17.6r141-open-rc.1/res/layout/tuya_browser_ly.xml:20
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_screen_toolbar.xml:36
+-keep class android.support.v7.widget.Toolbar { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_screen_simple_overlay_action_mode.xml:32
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_screen_simple.xml:25
+-keep class android.support.v7.widget.ViewStubCompat { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_alert_dialog_title_material.xml:56
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_alert_dialog_material.xml:52
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/b2bf9c574b647267d8e7560d94f7dadb/appcompat-v7-28.0.0/res/layout/abc_alert_dialog_button_bar_material.xml:43
+-keep class android.widget.Space { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_layout_custom_refresh.xml:12
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_item_search_config.xml:24
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_item_free_device.xml:26
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_scan_zigbee_gateway.xml:61
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/7c601bbaa779ebf29f3d41b284e7ef8f/tuya-config-mesh-1.0.0-SNAPSHOT/res/layout/bluemesh_list_item_add_mesh_device_new.xml:43
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/7c601bbaa779ebf29f3d41b284e7ef8f/tuya-config-mesh-1.0.0-SNAPSHOT/res/layout/bluemesh_fragment_sub_device_add.xml:31
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/26e61e3d3da18a209aca35aae6f8fecd/tuya-config-ble-1.0.0-SNAPSHOT/res/layout/bleconfig_activity_bledevice_scan.xml:85
+-keep class com.airbnb.lottie.LottieAnimationView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_layout_pagertab_imagetabview.xml:21
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_item_family_dailog_content_list_item.xml:9
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispces_dialog_loading_in_page_anim.xml:14
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uipsecs_item_family_dialog_content_item_click.xml:7
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uipsecs_item_family_dialog_content_choose_image.xml:17
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uipsecs_item_family_dialog_content_choose_icon.xml:17
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/scan_config_find_devs_list_layout.xml:7
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/70e686a186dea261e793c19bea0a75aa/tuyasmart-uiadapter-3.13.3r129-rc.4/res/layout/menu_list_item.xml:41
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_fragment_ap.xml:29
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_step_group_step.xml:4
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_scan_popup_item.xml:8
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_recycler_dev_config_add_success.xml:22
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_recycler_actived_gateway_list.xml:9
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_recycle_item_search_device.xml:9
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_prepare_confirm_layout.xml:24
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_list_dev_child_type.xml:7
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_item_search_config.xml:8
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_item_hand_right.xml:9
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_item_gateway.xml:9
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_item_free_device.xml:8
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_item_device_config_help.xml:6
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_device_config_guide.xml:44
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_qrconnect_help.xml:61
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_discover_list_item.xml:10
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/7c601bbaa779ebf29f3d41b284e7ef8f/tuya-config-mesh-1.0.0-SNAPSHOT/res/layout/bluemesh_list_item_add_mesh_device_new.xml:9
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/26e61e3d3da18a209aca35aae6f8fecd/tuya-config-ble-1.0.0-SNAPSHOT/res/layout/bleconfig_recycle_item_ble_scan.xml:17
+-keep class com.facebook.drawee.view.SimpleDraweeView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/dd65d8f7d67892bdd712a065959d9a2e/tuyasmart-demo-login-3.17.6r141/res/layout/country_list.xml:45
+-keep class com.tuya.smart.demo_login.base.widget.contact.CountryListView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_recycler_dev_config_add_success.xml:108
+-keep class com.tuya.smart.deviceconfig.base.view.ChooseFamilyView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_fragment_ap.xml:57
+-keep class com.tuya.smart.deviceconfig.base.view.WifiChooseAndInputPasswordView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_hotspot_item.xml:18
+-keep class com.tuya.smart.deviceconfig.base.view.WifiHotspotChooseView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/activity_config_failure.xml:144
+-keep class com.tuya.smart.deviceconfig.result.view.ConfigLoadingButton { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_search_device_list.xml:24
+-keep class com.tuya.smart.deviceconfig.search.view.ExListView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragement_widget_search_bar.xml:2
+-keep class com.tuya.smart.deviceconfig.search.view.SearchViewLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_search.xml:60
+-keep class com.tuya.smart.deviceconfig.searchv2.view.SmartButton { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_reset_device_step_container.xml:9
+-keep class com.tuya.smart.deviceconfig.viewutil.CustomViewPager { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_reset_device_step.xml:31
+-keep class com.tuya.smart.deviceconfig.viewutil.GifOrVideoPlayView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_reset_device_full_page.xml:57
+-keep class com.tuya.smart.deviceconfig.viewutil.GifPlayView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/qrcode_config_fragment_progress.xml:76
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_progress.xml:51
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_bind_device.xml:61
+-keep class com.tuya.smart.deviceconfig.viewutil.ProgressImage { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_search.xml:109
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_sub_device_config_search.xml:61
+-keep class com.tuya.smart.deviceconfig.viewutil.RippleView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/qrcode_config_fragment_progress.xml:85
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_progress.xml:60
+-keep class com.tuya.smart.deviceconfig.viewutil.StepGroup { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_reset_device_step_container.xml:15
+-keep class com.tuya.smart.deviceconfig.viewutil.StepIndicator { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_progress_and_result.xml:31
+-keep class com.tuya.smart.deviceconfig.viewutil.VerticalViewPager { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_play_video.xml:19
+-keep class com.tuya.smart.deviceconfig.viewutil.VideoPlayView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_video_play_view.xml:10
+-keep class com.tuya.smart.deviceconfig.viewutil.VideoView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/7cfb415ff24a7eb242c19a66d4d47069/tuyasmart-webcontainer-3.17.6r141-open-rc.1/res/layout/tuya_browser_ly.xml:80
+-keep class com.tuya.smart.jsbridge.view.TuyaWebview { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/7cfb415ff24a7eb242c19a66d4d47069/tuyasmart-webcontainer-3.17.6r141-open-rc.1/res/layout/tuya_browser_ly.xml:87
+-keep class com.tuya.smart.jsbridge.view.WebErrorView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/77f3718418ea2f12bcd36a0553fe1587/tuyasmart-qrcode-3.12.0r123-rc.2/res/layout/activity_capture.xml:13
+-keep class com.tuya.smart.multimedia.qrcode.view.ViewfinderView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uipsecs_item_family_dialog_content_single_choice.xml:24
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_item_family_dialog_content_single_choice.xml:12
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_reset_device_step.xml:120
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_reset_device_full_page.xml:116
+-keep class com.tuya.smart.uispecs.component.CheckBoxWithAnim { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_layout_custom_refresh.xml:2
+-keep class com.tuya.smart.uispecs.component.CustomRefreshHeadLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_layout_np_choose_timer.xml:22
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_effective_period.xml:180
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uipsecs_layout_family_dialog_content_numberpicker.xml:33
+-keep class com.tuya.smart.uispecs.component.NumberPicker { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_number_picker_with_selector_wheel_18.xml:23
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_number_picker_with_selector_wheel.xml:23
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_iconfont_np_countdown_dialog.xml:23
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/c1dc073faa933c8681d11045df6f620f/tuyasmart-base-3.17.0r139-rc.3/res/layout/number_picker_with_selector_wheel.xml:22
+-keep class com.tuya.smart.uispecs.component.NumberPicker$CustomEditText { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/7c601bbaa779ebf29f3d41b284e7ef8f/tuya-config-mesh-1.0.0-SNAPSHOT/res/layout/bluemesh_activity_add_mesh_device.xml:31
+-keep class com.tuya.smart.uispecs.component.RippleBackground { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/activity_device_config_guide_second.xml:9
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/activity_config_all_dms.xml:7
+-keep class com.tuya.smart.uispecs.component.ScrollViewPager { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uipsecs_layout_family_dialog_content_viewpager.xml:7
+-keep class com.tuya.smart.uispecs.component.ScrollWrapContentViewPager { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_widget_search_bar.xml:2
+-keep class com.tuya.smart.uispecs.component.SearchViewLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_layout_ln_seekbar.xml:30
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uipsecs_layout_family_dialog_content_percent_progress.xml:63
+-keep class com.tuya.smart.uispecs.component.SeekBar { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_layout_swipe_to_load_hasfooter.xml:2
+-keep class com.tuya.smart.uispecs.component.SwipeToLoadLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/70e686a186dea261e793c19bea0a75aa/tuyasmart-uiadapter-3.13.3r129-rc.4/res/layout/recycler_menu_item_view.xml:74
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/70e686a186dea261e793c19bea0a75aa/tuyasmart-uiadapter-3.13.3r129-rc.4/res/layout/menu_list_item.xml:88
+-keep class com.tuya.smart.uispecs.component.SwitchButton { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispces_dialog_progress.xml:9
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_free_scan_device_bind.xml:36
+-keep class com.tuya.smart.uispecs.component.circleprogress.CircleProgressView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uipsecs_layout_family_dialog_title_and_tip.xml:26
+-keep class com.tuya.smart.uispecs.component.edittext.AlignTextVIew { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_dialog_tip_view.xml:15
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_success_dialog.xml:13
+-keep class com.tuya.smart.uispecs.component.loading.CustomStatusView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/fragment_qrcode_tip_layout.xml:78
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_fragment_ap.xml:100
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_device_success_layout.xml:34
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_wifi_activity_wifi_hotspot_tip.xml:76
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_prepare_confirm_layout.xml:45
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_wifi_choose.xml:265
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_search.xml:286
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_qrcode_camera_layout.xml:56
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_bind_device_success.xml:41
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_fragment_ap_wifi_tip.xml:119
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_dialog_feedback.xml:63
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/0593c68f4b8c515e5a5a50c791bf8925/tuya-config-1.0.0-SNAPSHOT/res/layout/config_activity_qrconnect_help.xml:76
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/7c601bbaa779ebf29f3d41b284e7ef8f/tuya-config-mesh-1.0.0-SNAPSHOT/res/layout/bluemesh_activity_add_mesh_device.xml:79
+-keep class com.tuya.smart.uispecs.component.loadingButton.LoadingButton { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uipsecs_layout_family_dialog_content_seekbar.xml:37
+-keep class com.tuya.smart.uispecs.component.progress.ColorSeekBar { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_recycler_swipe_view_item.xml:17
+-keep class com.tuya.smart.uispecs.component.recyclerView.swipe.SwipeMenuLayout { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_recycler_swipe_view_item.xml:27
+-keep class com.tuya.smart.uispecs.component.recyclerView.swipe.SwipeMenuView { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_toolbar_top_view.xml:139
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_search_toolbar_top_view.xml:124
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_layout_family_dialog_title_pagertab_colorful.xml:7
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_layout_family_dialog_title_pagertab.xml:7
+-keep class com.tuya.smart.uispecs.component.tab.PagerTab { <init>(...); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/10207560142467d6dfedd375ef000ccf/tuyasmart-uispecs-0.0.7/res/layout/uispecs_recycler_swipe_view_load_more.xml:20
+-keep class com.yanzhenjie.loading.LoadingView { <init>(...); }
+
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/src/main/res/layout/activity_main.xml:18
+-keepclassmembers class * { *** actionConfig(android.view.View); }
+
+# Referenced at /Users/apple/AndroidStudioProjects/3.0/TuyaSmart_Config_BizBundle/app/src/main/res/layout/activity_main.xml:9
+-keepclassmembers class * { *** createHome(android.view.View); }
+
+# Referenced at /Users/apple/.gradle/caches/transforms-2/files-2.1/7c601bbaa779ebf29f3d41b284e7ef8f/tuya-config-mesh-1.0.0-SNAPSHOT/res/layout/bluemesh_fragment_sub_device_add.xml:71
+-keepclassmembers class * { *** doComplete(android.view.View); }
+
+
+# Copyright (C) 2018 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Ensure that reflectively-loaded inflater is not obfuscated. This can be
+# removed when we stop supporting AAPT1 builds.
+-keepnames class android.support.v7.app.AppCompatViewInflater
+
+# aapt is not able to read app::actionViewClass and app:actionProviderClass to produce proguard
+# keep rules. Add a commonly used SearchView to the keep list until b/109831488 is resolved.
+-keep class android.support.v7.widget.SearchView { <init>(...); }
+# Copyright (C) 2015 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# When layoutManager xml attribute is used, RecyclerView inflates
+#LayoutManagers' constructors using reflection.
+-keep public class * extends android.support.v7.widget.RecyclerView$LayoutManager {
+    public <init>(android.content.Context, android.util.AttributeSet, int, int);
+    public <init>();
+}
+
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in D:\eclipse\sdk/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the proguardFiles
+# directive in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+
+-keep class com.tuya.sdk.blelib.BluetoothManager {
+     *;
+}
+
+-keep class com.tuya.sdk.blelib.BluetoothManager$* {
+     *;
+}
+
+-keep class com.tuya.sdk.blelib.response.BleResponse {
+     <methods>;
+}
+
+-keep interface * extends com.tuya.sdk.blelib.response.BleResponse
+
+
+-keep class com.tuya.sdk.blelib.**{*;}
+
+-keep class * extends com.tuya.smart.api.model.ApiModel {
+    *;
+}
+-keep class * extends com.tuya.smart.api.module.ModuleApp
+-keep class * extends com.tuya.smart.api.service.MicroService
+-keep class * extends com.tuya.smart.api.start.AbstractPipeLineRunnable
+
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
+
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+-keep class * extends com.tuya.smart.jsbridge.base.component.JSComponent{*;}
+-keep class com.tuya.smart.jsbridge.data.**{*;}
+-keep class com.tuya.smart.jsbridge.business.bean.**{*;}
+
+-keepattributes *Annotation*
+-keepattributes JavascriptInterface
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+-keep class com.tuya.smart.jsbridge.base.webview.WebViewFragment{*;}
+
+-keep class com.tuya.smart.jsbridge.MallSdk{*;}
+-keep class com.tuya.smart.jsbridge.ITuyaMallSdk{*;}
+
+-keepclassmembers class ** {
+    public void onEvent*(**);
+}
+
+#fastJson
+-keep class com.alibaba.fastjson.**{*;}
+-dontwarn com.alibaba.fastjson.**
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
+
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
+
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
+
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+# bean with server
+-keep class com.tuya.smart.bleconfig.bean.ConfigProductInfoBean
+-keep class com.tuya.smart.bleconfig.bean.BLEUpgradeBean
+-keep class com.tuya.smart.bleconfig.bean.BLEUpgradeInfoBean
+-keep class com.tuya.smart.bleconfig.bean.ScanDevItemBean
+
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
+
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+
+-keep class com.tuya.smart.ble.api.**{*;}
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
+
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+
+-keep class com.tuya.smart.deviceconfig.base.bean.DeviceTypeBean
+-keep class com.tuya.smart.deviceconfig.base.bean.DeviceTypeConfigBean
+-keep class com.tuya.smart.deviceconfig.base.bean.FeedbackRequest
+-keep class com.tuya.smart.deviceconfig.search.bean.PageDevicesBean
+-keep class com.tuya.smart.deviceconfig.guide.bean.DeviceConfigGuideBean
+-keep class com.tuya.smart.scan.bean.**{*;}
+
+
+# Copyright (C) 2016 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# keep setters in VectorDrawables so that animations can still work.
+-keepclassmembers class android.support.graphics.drawable.VectorDrawableCompat$* {
+   void set*(***);
+   *** get*();
+}
+
+# Copyright (C) 2017 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Prevent Parcelable objects from being removed or renamed.
+-keep class android.support.v4.media.** implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+
+# Prevent Parcelable objects from being removed or renamed.
+-keep class android.support.mediacompat.** implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keep class android.support.v4.media.Audio* implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keep class android.support.v4.media.MediaBrowserCompatUtils* implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keep class android.support.v4.media.MediaBrowserProtocol* implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keep class android.support.v4.media.MediaBrowserService* implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keep class android.support.v4.media.Volume* implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keep class android.support.v4.media.app.** implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keep class android.support.v4.media.session.MediaButton* implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+# Copyright (C) 2016 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CoordinatorLayout resolves the behaviors of its child components with reflection.
+-keep public class * extends android.support.design.widget.CoordinatorLayout$Behavior {
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>();
+}
+
+# Make sure we keep annotations for CoordinatorLayout's DefaultBehavior and ViewPager's DecorView
+-keepattributes *Annotation*
+
+# aapt2 is not (yet) keeping FQCNs defined in the appComponentFactory <application> attribute
+-keep class android.support.v4.app.CoreComponentFactory
+
+-keep public class * extends androidx.versionedparcelable.VersionedParcelable
+-keep public class android.support.**Parcelizer { *; }
+-keep public class androidx.**Parcelizer { *; }
+-keep public class androidx.versionedparcelable.ParcelImpl
+
+-keepattributes *Annotation*
+
+-keepclassmembers enum android.arch.lifecycle.Lifecycle$Event {
+    <fields>;
+}
+
+-keep class * implements android.arch.lifecycle.LifecycleObserver {
+}
+
+-keep class * implements android.arch.lifecycle.GeneratedAdapter {
+    <init>(...);
+}
+
+-keepclassmembers class ** {
+    @android.arch.lifecycle.OnLifecycleEvent *;
+}
+-keep class * extends android.arch.lifecycle.ViewModel {
+    <init>();
+}
+-keep @android.support.annotation.Keep class * {*;}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <init>(...);
+}
+
+
+# JSR 305 annotations are for embedding nullability information.
+-dontwarn javax.annotation.**
+
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+
+# OkHttp platform used only on JVM and when Conscrypt dependency is available.
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+
+-ignorewarnings

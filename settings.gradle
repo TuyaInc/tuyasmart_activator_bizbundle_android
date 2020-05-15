@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name='TuyaSmart_Config_BizBundle'
