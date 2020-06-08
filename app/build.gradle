@@ -93,19 +93,19 @@ dependencies {
     implementation 'com.tuya.smart:tuyasmart-qrcode:3.12.0r123-rc.2'
 
     //涂鸦 mesh 配网业务
-    implementation 'com.tuya.smart:tuya-config-mesh:1.0.0-SNAPSHOT'
-    implementation 'com.tuya.smart:tuya-config-mesh-api:1.0.0-SNAPSHOT'
+    implementation 'com.tuya.smart:tuya-config-mesh:1.0.3'
+    implementation 'com.tuya.smart:tuya-config-mesh-api:1.0.1'
 
     //涂鸦 ble 配网业务
-    implementation 'com.tuya.smart:tuya-config-ble:1.0.0-SNAPSHOT'
-    implementation 'com.tuya.smart:tuya-config-ble-api:1.0.0-SNAPSHOT'
+    implementation 'com.tuya.smart:tuya-config-ble:1.0.1'
+    implementation 'com.tuya.smart:tuya-config-ble-api:1.0.1'
 
     //涂鸦通用配网业务
-    implementation 'com.tuya.smart:tuya-config-api:1.0.0-SNAPSHOT'
-    implementation 'com.tuya.smart:tuya-config:1.0.0-SNAPSHOT'
+    implementation 'com.tuya.smart:tuya-config-api:1.0.1'
+    implementation 'com.tuya.smart:tuya-config:1.0.2'
 
     //涂鸦扫码配网业务
-    implementation 'com.tuya.smart:tuya-scan:1.0.0-SNAPSHOT'
+    implementation 'com.tuya.smart:tuya-scan:1.0.1'
 
 
     //仅供demo使用的登录业务（集成业务包不需要）
