@@ -142,8 +142,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onRoomDataUpdate(boolean b) {
+            public void onRoomDataUpdate() {
+                Toast.makeText(MainActivity.this, "please refresh room data", Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onOpenDevicePanel(String s) {
+                Toast.makeText(MainActivity.this, "u can open the panel of the device: " + s, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onExitConfigBiz() {
+                Toast.makeText(MainActivity.this, "device config business exit", Toast.LENGTH_SHORT).show();
             }
         });
     }
