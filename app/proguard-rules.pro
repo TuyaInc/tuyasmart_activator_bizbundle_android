@@ -199,3 +199,8 @@
 #tuya
 -keep class com.tuya.**{*;}
 -dontwarn com.tuya.**
+
+-keep @com.facebook.common.internal.DoNotStrip class *
+-keepclassmembers class * {
+@com.facebook.common.internal.DoNotStrip *;
+}
