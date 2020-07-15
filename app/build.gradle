@@ -105,7 +105,7 @@ dependencies {
 
     //涂鸦通用配网业务
     implementation 'com.tuya.smart:tuya-config-api:1.0.3'
-    implementation 'com.tuya.smart:tuya-config:1.0.7'
+    implementation 'com.tuya.smart:tuya-config:1.0.8'
 
     //涂鸦扫码配网业务
     implementation 'com.tuya.smart:tuya-scan:1.0.1'
