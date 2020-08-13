@@ -65,7 +65,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //homesdk
-    implementation 'com.tuya.smart:tuyasmart:3.17.0-beta1'
+    implementation 'com.tuya.smart:tuyasmart:3.17.6'
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.12.3'
 
     implementation 'com.tuya.smart:tuyasmart-framework:3.17.0.2r139-external'
@@ -105,7 +105,7 @@ dependencies {
 
     //涂鸦通用配网业务
     implementation 'com.tuya.smart:tuya-config-api:1.0.3'
-    implementation 'com.tuya.smart:tuya-config:1.0.8'
+    implementation 'com.tuya.smart:tuya-config:1.0.9'
 
     //涂鸦扫码配网业务
     implementation 'com.tuya.smart:tuya-scan:1.0.1'
