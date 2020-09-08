@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tuya.smart.android.common.utils.L;
+import com.tuya.smart.api.SmartInitializer;
 import com.tuya.smart.home.sdk.TuyaHomeSdk;
 import com.tuya.smart.sdk.TuyaSdk;
 import com.tuya.smart.wrapper.api.TuyaWrapper;
@@ -25,6 +26,7 @@ public class TuyaSmartApp extends Application {
         TuyaSdk.init(this);
         TuyaHomeSdk.setDebugMode(true);
         Fresco.initialize(this);
+        SmartInitializer.init(this);
     }
 
     public static String getProcessName(Context context) {

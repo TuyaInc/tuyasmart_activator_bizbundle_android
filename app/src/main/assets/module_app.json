@@ -1,0 +1,120 @@
+{
+  "pipeLine": {
+    "PIPE_LINE_TAB_LAUNCHER_STARTED": [],
+    "PIPE_LINE_APPLICATION_SYNC": [],
+    "PIPE_LINE_APPLICATION_ASYNC": []
+  },
+  "moduleMap": {
+    "com.tuya.smart.deviceconfig.TuyaConfigApp": [
+      "presentGatewayCategroy",
+      "discover_ble_scan",
+      "scan_parse_qrcode_device_bind",
+      "scan_dev_config",
+      "config_device",
+      "device_gw_sub_device_help_list",
+      "device_scan_add",
+      "device_gw_sub_config",
+      "scan_add_virtual_device",
+      "device_only_search_config_gw_sub",
+      "scan_gprs_dev_config"
+    ],
+    "com.tuya.smart.config.ble.BleModuleApp": [
+      "bleScan",
+      "single_ble_config",
+      "wifi_ble_config",
+      "wifi_ble_normal_config",
+      "ble_config_success"
+    ],
+    "com.tuya.smart.config.mesh.BlueMeshConfigApp": [
+      "meshConfig",
+      "meshDialogConfig",
+      "meshGwDialogConfig"
+    ],
+    "com.tuya.smart.scan.ScanApp": [
+      "scan"
+    ],
+    "com.tuya.smart.panel.base.PanelModuleApp": [
+      "addAlarm",
+      "alarm",
+      "newAlarm",
+      "panelAction"
+    ],
+    "com.tuya.smart.camera.router.CameraApp": [
+      "camera_panel_2",
+      "camera_message_panel",
+      "camera_cloud_panel",
+      "doorbell_camera_playback_panel",
+      "camera_panel_more",
+      "camera_door_bell",
+      "doorbell_camera_panel",
+      "camera_local_video_photo",
+      "camera_action_doorbell",
+      "camera_motion_monitor",
+      "camera_playback_panel",
+      "camera_preset_point"
+    ],
+    "com.tuya.smart.ipc.UIVideoModuleApp": [
+      "camera_video_view"
+    ],
+    "com.tuya.smart.jsbridge.HyBridBrowserApp": [
+      "hybrid_browser",
+      "tuyaweb"
+    ],
+    "com.tuya.smart.VideoApp": [
+      "video_or_pic"
+    ],
+    "com.tuya.smart.scene.SceneApp": [
+      "sceneAction",
+      "createScene",
+      "createScene_allDevices",
+      "editScene",
+      "editSmartScene",
+      "createSmartScene",
+      "createAuto",
+      "createAutoWithCondition",
+      "devManualAndSmart",
+      "createRNSceneTask",
+      "houseScene"
+    ],
+    "com.tuya.smart.feedback.FeedbackApp": [
+      "helpAndFeedBack",
+      "add_feedback",
+      "feedback_list",
+      "helpCenter",
+      "chooseFeedbackType"
+    ],
+    "com.tuya.smart.netdiagnosis.NetDiagnosisModuleApp": [
+      "netdiagnosis_home"
+    ],
+    "com.tuya.smart.message.MessageApp": [
+      "messageCenter",
+      "message_details",
+      "push_setting"
+    ]
+  },
+  "serviceMap": {
+    "com.tuya.smart.mesh.BlueMeshService": "com.tuya.smart.bluemesh.BlueMeshServiceImpl",
+    "com.tuya.smart.api.service.H5Service": "com.tuya.smart.jsbridge.router.H5ServerImpl",
+    "com.tuya.smart.camera.rctpackage.caller.api.CameraRCTPackageCallerService": "com.tuya.smart.camera.rctpackage.caller.CameraRCTPackageCallerServiceImpl",
+    "com.tuya.smart.scene.api.SceneDataService": "com.tuya.smart.scene.SceneDataServiceImpl",
+    "com.tuya.smart.scene.business.api.ITuyaSceneBusinessService": "com.tuya.smart.scene.TuyaSceneBusinessManager",
+    "com.tuya.smart.commonbiz.api.family.AbsFamilyService": "com.tuya.smart.commonbiz.family.outside.FamilyService",
+    "com.tuya.smart.feedback.api.FeedbackService": "com.tuya.smart.feedback.FeedbackServiceImpl",
+    "com.tuya.smart.message.api.MessageService": "com.tuya.smart.message.MessageServiceImpl",
+    "com.tuya.smart.deviceconfig.api.DeviceConfigService": "com.tuya.smart.deviceconfig.discover.TuyaConfigServiceImpl",
+    "com.tuya.smart.config.ble.api.BleConfigService": "com.tuya.smart.config.ble.BleConfigServiceImpl",
+    "com.tuya.smart.config.mesh.api.BlueMeshConfigService": "com.tuya.smart.config.mesh.BlueMeshConfigServiceImpl"
+  },
+  "eventMap": {
+    "global_user_event": [
+      {
+        "name": "com.tuya.smart.ipc.UIVideoModuleApp",
+        "thread": false
+      },
+      {
+        "name": "com.tuya.smart.jsbridge.HyBridBrowserApp",
+        "thread": false
+      }
+    ]
+  }
+}
