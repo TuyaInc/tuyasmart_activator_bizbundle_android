@@ -68,7 +68,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.12.3'
 
     implementation 'com.tuya.smart:tuyasmart-framework:3.17.0.2r139-external'
-    implementation "com.tuya.android.module:tymodule-annotation:0.0.8"
+//    implementation "com.tuya.android.module:tymodule-annotation:0.0.8"
 
     //三方库
     implementation 'com.alibaba:fastjson:1.1.67.android'
@@ -90,7 +90,7 @@ dependencies {
     implementation 'com.tuya.smart:tuyasmart-webcontainer:3.17.6r141-open-rc.2'
     implementation 'com.tuya.smart:tuyasmart-xplatformmanager:1.0.0'
 
-    implementation 'com.tuya.smart:tuya-commonbiz-api:1.0.0-SNAPSHOT'
+    implementation 'com.tuya.smart:tuya-commonbiz-api:1.0.1'
     implementation 'com.tuya.smart:tuyasmart-qrcode:3.12.0r123-rc.2'
     implementation 'com.tuya.smart:tuyasmart-appshell:3.10.0'
 
